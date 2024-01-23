@@ -15,7 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - run: npm install
+      - run: npx pnpm install
       # Build the static site
       - run: npm run build
       - name: Deploy
