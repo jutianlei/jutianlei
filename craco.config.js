@@ -5,7 +5,7 @@ const config = {
       // 您可以在这里修改 webpackConfig 对象以满足您的需求
       if (env === "production") {
         // 设置 publicPath
-        webpackConfig.output.publicPath = "/jutainlei";
+        webpackConfig.output.publicPath = "/jutianlei";
       }
 
       // 返回修改后的 webpack 配置
