@@ -1,0 +1,25 @@
+::-webkit-scrollbar {
+  width: 0px; /* 设置滚动条宽度 */
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #e0e0e0; /* 设置滚动条滑块颜色 */
+  border-radius: 4px; /* 设置滑块边界半径 */
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: #e0e0e0; /* 设置滑块悬停时的颜色 */
+}
+
+/* 垂直滚动条 */
+::-webkit-scrollbar-track {
+  background-color: #f1f1f1; /* 设置滚动条背景颜色 */
+}
+
+::-webkit-scrollbar-track:hover {
+  background-color: #f1f1f1; /* 设置滚动条背景颜色（悬停时） */
+}
+
+::-webkit-scrollbar-track:vertical {
+  border-left: 1px solid #eaeaea; /* 设置垂直滚动条左边框 */
+}
