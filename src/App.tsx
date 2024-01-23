@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { HashRouter, Route, Routes } from "react-router-dom";
 import { routes } from "./router";
 import { Layouts } from "./layouts";
 import { RoutesProps } from "@/constant/types";
@@ -27,12 +27,13 @@ const createRoute = (routes: RoutesProps[]) => {
   return list;
 };
 export const App: React.FC = () => {
+  console.log(routes);
   return (
-    <BrowserRouter>
+    <HashRouter basename="/">
       <Routes>
         <>{createRoute(routes)}</>
         <Route path="*/" element={<Absent />}></Route>
       </Routes>
-    </BrowserRouter>
+    </HashRouter>
   );
 };
