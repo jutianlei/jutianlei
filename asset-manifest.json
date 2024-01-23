@@ -1,0 +1,23 @@
+{
+  "files": {
+    "main.css": "/static/css/main.323edba3.css",
+    "main.js": "/static/js/main.71fcb878.js",
+    "static/media/柯柯柯啊 - 姑娘别哭泣.mp3": "/static/media/柯柯柯啊 - 姑娘别哭泣.580a90edea91ef4de2e3.mp3",
+    "static/media/幸存者联盟、幼稚园杀手 - 大举进攻.mp3": "/static/media/幸存者联盟、幼稚园杀手 - 大举进攻.5b5d34ae904ec5ae2cf3.mp3",
+    "static/media/王子健 - 循迹.mp3": "/static/media/王子健 - 循迹.9ff982bfdfea21a66a41.mp3",
+    "static/media/柯柯柯啊 - 一点归鸿 (柯柯吉他版).mp3": "/static/media/柯柯柯啊 - 一点归鸿 (柯柯吉他版).cf0a56119eecca08216b.mp3",
+    "static/media/闻人听書_ - 一笑江湖 (DJ弹鼓版).mp3": "/static/media/闻人听書_ - 一笑江湖 (DJ弹鼓版).a5029fdb163ea284ea49.mp3",
+    "static/media/侯泽润 - 大风吹倒梧桐树.mp3": "/static/media/侯泽润 - 大风吹倒梧桐树.ad779a0dcfe7ec0d45a9.mp3",
+    "static/media/柯柯柯啊 - 黄梅戏 (柯柯吉他版).mp3": "/static/media/柯柯柯啊 - 黄梅戏 (柯柯吉他版).9175f067ad1ec9f8d43a.mp3",
+    "static/media/沐泽 - 星星还是那么亮 (DJ版).mp3": "/static/media/沐泽 - 星星还是那么亮 (DJ版).d16bc19f2b7fd6c8ecac.mp3",
+    "static/media/homebg.jpg": "/static/media/homebg.88bd97dcf31cbb4011e7.jpg",
+    "static/media/小梁 - 偏爱 (片段).mp3": "/static/media/小梁 - 偏爱 (片段).a850341be3aa3bf68af1.mp3",
+    "index.html": "/index.html",
+    "main.323edba3.css.map": "/static/css/main.323edba3.css.map",
+    "main.71fcb878.js.map": "/static/js/main.71fcb878.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.323edba3.css",
+    "static/js/main.71fcb878.js"
+  ]
+}
