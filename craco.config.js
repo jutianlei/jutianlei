@@ -1,5 +1,9 @@
+const path = require("path");
 const config = {
   webpack: {
+    alias: {
+      "@": path.resolve(__dirname, "src"),
+    },
     configure: (webpackConfig, { env, paths }) => {
       // 自定义 webpack 配置
       // 您可以在这里修改 webpackConfig 对象以满足您的需求

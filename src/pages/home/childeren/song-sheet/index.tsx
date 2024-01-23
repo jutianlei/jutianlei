@@ -1,6 +1,6 @@
 import { useLocation } from "react-router-dom";
 import React, { useEffect, useState } from "react";
-import { trackAll } from "../../../../api";
+import { trackAll } from "@/api";
 import Dayjs from "dayjs";
 import Tooltip from "@mui/material/Tooltip";
 import { TabsCom } from "./tabs";
@@ -15,10 +15,12 @@ interface DatailsProps {
   creator: { nickname: string; avatarUrl: string };
 }
 export interface miusProps {
-  name: string;
-  userName: string;
-  time: string;
-  album: string;
+  name?: string;
+  userName?: string;
+  time?: string;
+  album?: string;
+  id?: number;
+  picUrl?: string;
 }
 export const SongSheet = () => {
   const { state } = useLocation();
@@ -35,6 +37,7 @@ export const SongSheet = () => {
   const [playList, setPlayList] = useState<miusProps[]>([]);
   const getData = async () => {
     const { playlist } = await trackAll({ id: state?.id, limit: 20 });
+    console.log(playlist);
     setData({
       ...playlist,
       playCount:
@@ -45,9 +48,11 @@ export const SongSheet = () => {
     setPlayList(
       playlist?.tracks?.map((item: any) => {
         return {
+          id: item.id,
           name: item?.name,
           userName: item.ar[0]?.name,
           album: item?.al?.name,
+          picUrl: item?.al?.picUrl,
           time: Dayjs(item?.videoInfo?.video?.playTime).format("mm:ss"),
         };
       })

@@ -1,7 +1,7 @@
 import { RoutesProps } from "@/constant/types";
-import { Home } from "../pages/home";
-import { Playlist } from "../pages/playlist";
-import { SongSheet } from "../pages/home/childeren";
+import { Home } from "@/pages/home";
+import { Playlist } from "@/pages/playlist";
+import { SongSheet } from "@/pages/home/childeren";
 export const routes: RoutesProps[] = [
   {
     path: "/",

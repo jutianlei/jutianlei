@@ -1,12 +1,12 @@
-const DFCDNKWTS = require("../../assets/music/侯泽润 - 大风吹倒梧桐树.mp3");
-const GNBKQ = require("../../assets/music/柯柯柯啊 - 姑娘别哭泣.mp3");
-const XXHSNML = require("../../assets/music/沐泽 - 星星还是那么亮 (DJ版).mp3");
-const YXJH = require("../../assets/music/闻人听書_ - 一笑江湖 (DJ弹鼓版).mp3");
-const DJJG = require("../../assets/music/幸存者联盟、幼稚园杀手 - 大举进攻.mp3");
-const PA = require("../../assets/music/小梁 - 偏爱 (片段).mp3");
-const XJ = require("../../assets/music/王子健 - 循迹.mp3");
-const HMX = require("../../assets/music/柯柯柯啊 - 黄梅戏 (柯柯吉他版).mp3");
-const YDGH = require("../../assets/music/柯柯柯啊 - 一点归鸿 (柯柯吉他版).mp3");
+const DFCDNKWTS = require("@/assets/music/侯泽润 - 大风吹倒梧桐树.mp3");
+const GNBKQ = require("@/assets/music/柯柯柯啊 - 姑娘别哭泣.mp3");
+const XXHSNML = require("@/assets/music/沐泽 - 星星还是那么亮 (DJ版).mp3");
+const YXJH = require("@/assets/music/闻人听書_ - 一笑江湖 (DJ弹鼓版).mp3");
+const DJJG = require("@/assets/music/幸存者联盟、幼稚园杀手 - 大举进攻.mp3");
+const PA = require("@/assets/music/小梁 - 偏爱 (片段).mp3");
+const XJ = require("@/assets/music/王子健 - 循迹.mp3");
+const HMX = require("@/assets/music/柯柯柯啊 - 黄梅戏 (柯柯吉他版).mp3");
+const YDGH = require("@/assets/music/柯柯柯啊 - 一点归鸿 (柯柯吉他版).mp3");
 interface MusicListProps {
   name?: string;
   userName?: string;

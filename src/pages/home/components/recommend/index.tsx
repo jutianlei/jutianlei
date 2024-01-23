@@ -5,7 +5,7 @@ import "swiper/css/pagination";
 import { Pagination } from "swiper/modules";
 import Tooltip from "@mui/material/Tooltip";
 import { useSetState } from "ahooks";
-import { personalized } from "../../../../api";
+import { personalized } from "@/api";
 import { useNavigate } from "react-router-dom";
 interface dataProps {
   id: number;

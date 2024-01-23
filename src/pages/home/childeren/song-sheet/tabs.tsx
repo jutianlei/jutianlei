@@ -4,8 +4,9 @@ import type { TabsProps } from "antd";
 import "./index.css";
 import { miusProps } from "./";
 import { useLocation } from "react-router-dom";
-import { getSubscribers } from "../../../../api";
+import { getSubscribers } from "@/api";
 import Tooltip from "@mui/material/Tooltip";
+import { useBearStore } from "@/store";
 interface DataListProps {
   avatarUrl: string;
   nickname: string;
@@ -13,6 +14,11 @@ interface DataListProps {
 }
 export const TabsCom = ({ data }: { data: miusProps[] }) => {
   const { state } = useLocation();
+  const [setMusicListPush, musicList, setMusicIndex] = useBearStore((state) => [
+    state.setMusicListPush,
+    state.musicList,
+    state.setMusicIndex,
+  ]);
   const MiustList = () => {
     return (
       <div>
@@ -28,9 +34,13 @@ export const TabsCom = ({ data }: { data: miusProps[] }) => {
             return (
               <div
                 key={index}
-                className={`w-full flex text-base py-3  ${
+                className={`w-full flex text-base cursor-pointer py-3  ${
                   index % 2 === 0 ? "bg-slate-50/10" : "bg-slate-50/20"
                 }`}
+                onClick={() => {
+                  setMusicListPush(item);
+                  setMusicIndex(musicList?.length);
+                }}
               >
                 <div className=" w-32 text-slate-500">{index + 1}</div>
                 <div className="flex-1">{item.name}</div>

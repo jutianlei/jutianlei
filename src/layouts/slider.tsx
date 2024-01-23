@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { routes } from "../router";
+import { routes } from "@/router";
 import { useNavigate } from "react-router-dom";
 export const Sidebar = () => {
   const navigate = useNavigate();

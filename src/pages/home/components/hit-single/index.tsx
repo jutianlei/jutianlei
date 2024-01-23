@@ -1,23 +1,26 @@
 import React, { useEffect, useState } from "react";
-import { newsong } from "../../../../api";
+import { newsong } from "@/api";
 import Dayjs from "dayjs";
-interface SingleProps {
-  id: number;
-  picUrl: string;
-  name: string;
-  userName: string;
-  song: {
-    artists: [{ name: string }];
-    mMusic: { playTime: Date };
-  };
-  time: "string";
+import { useBearStore } from "@/store";
+export interface SingleProps {
+  id?: number;
+  picUrl?: string;
+  name?: string;
+  userName?: string;
+  time?: string;
+  album?: string;
 }
 export const HitSingle: React.FC = () => {
+  const [setMusicListPush, musicList, setMusicIndex] = useBearStore((state) => [
+    state.setMusicListPush,
+    state.musicList,
+    state.setMusicIndex,
+  ]);
   const [singleList, setSingleList] = useState<SingleProps[]>([]);
   const getData = async () => {
     const res = await newsong({ limit: 9 });
     setSingleList(
-      res.map((item: SingleProps) => {
+      res.map((item: any) => {
         return {
           id: item.id,
           name: item.name,
@@ -41,6 +44,10 @@ export const HitSingle: React.FC = () => {
               <div
                 key={index}
                 className="w-[32%] flex mt-3 mb-3 cursor-pointer  hover:bg-white/20  pr-1 mr-2 rounded-lg"
+                onClick={() => {
+                  setMusicListPush(item);
+                  setMusicIndex(musicList?.length);
+                }}
               >
                 <div className="w-20">
                   <img

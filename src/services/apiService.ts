@@ -9,7 +9,7 @@ export class ApiService {
   constructor({ baseURL }: IAxiosInstanceProps) {
     this.fetch = axios.create({
       baseURL,
-      timeout: parseInt(timeout, 10),
+      timeout: 60000,
     });
     this.fetch.interceptors.request.use(
       (config) => {

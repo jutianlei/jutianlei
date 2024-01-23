@@ -2,18 +2,27 @@ import React, { useState, useRef, useEffect, ChangeEvent } from "react";
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import Tooltip from "react-bootstrap/Tooltip";
 import Slider from "@mui/material/Slider";
-// import "bootstrap/dist/css/bootstrap.min.css";
-import { MusicSlider } from "../components";
+import { MusicSlider } from "@/components";
 import { musicList } from "./constant";
 import "./index.css";
+import { useBearStore } from "@/store";
+import { MusicListView } from "./components/musicListView";
+import { getSongUrl, checkMusic } from "@/api";
 export const Footer: React.FC = () => {
   const [isPlaying, setIsPlaying] = useState(false);
   const audioRef = useRef<HTMLAudioElement>(null);
   const [duration, setDuration] = useState(0);
   const [currentTime, setCurrentTime] = useState(0);
-  const [musicIndex, setMusicIndex] = useState(0);
   const [isUserInteraction, setIsUserInteraction] = useState(false);
   const [volume, setVolume] = useState(100); // 音量状态变量
+  const [musicList, musicIndex, setMusicIndex, picUrl, setPicUrl] =
+    useBearStore((state) => [
+      state.musicList,
+      state.musicIndex,
+      state.setMusicIndex,
+      state.picUrl,
+      state.setPicUrl,
+    ]);
   const togglePlay = () => {
     setIsUserInteraction(true);
     if (isPlaying) {
@@ -110,6 +119,28 @@ export const Footer: React.FC = () => {
       </div>
     </Tooltip>
   );
+  const getMusic = async () => {
+    console.log(musicIndex);
+    const DATA = await checkMusic({ id: musicList[musicIndex]?.id });
+    if (DATA?.success) {
+      const res = await getSongUrl({ id: musicList[musicIndex]?.id });
+      setPicUrl(res.data[0].url);
+      setIsPlaying(true);
+
+      const handleLoadedData = () => {
+        //监听是否加载完成
+        audioRef.current?.pause();
+        audioRef.current?.play();
+      };
+
+      audioRef?.current?.addEventListener("loadeddata", handleLoadedData);
+    }
+  };
+  useEffect(() => {
+    if (musicList?.length) {
+      getMusic();
+    }
+  }, [musicList, musicIndex]);
   return (
     <footer className="   backdrop-blur-xl h-full shadow-md rounded-b-lg relative">
       <MusicSlider
@@ -120,20 +151,23 @@ export const Footer: React.FC = () => {
         <div className=" w-96 h-full flex items-center pl-6">
           <img
             className="w-16 h-16   rounded  shadow-lg"
-            src={musicList[musicIndex].imgUrl}
+            src={
+              musicList[musicIndex]?.picUrl ||
+              "https://bpic.588ku.com/element_origin_min_pic/00/97/64/9156f326114ebcd.jpg"
+            }
             alt=""
           />
           <div className="flex flex-col pl-5">
             <div className="text-base font-semibold pb-1">
-              {musicList[musicIndex].name}
+              {musicList[musicIndex]?.name || "请播放歌曲吧"}
             </div>
             <div className=" text-sm text-slate-600">
-              {musicList[musicIndex].userName}
+              {musicList[musicIndex]?.userName || "暂无歌手"}
             </div>
           </div>
         </div>
         <div className="flex-1 flex">
-          <audio ref={audioRef} src={musicList[musicIndex].url} />
+          <audio ref={audioRef} src={picUrl} />
           <div className="flex-1 flex justify-center items-center">
             <div
               className="flex items-center ml-14  rounded-full shadow-lg cursor-pointer"
@@ -174,9 +208,7 @@ export const Footer: React.FC = () => {
             <div className="flex-1">
               <i className="iconfont wyysuijibofang text-cyan-500 text-xl"></i>
             </div>
-            <div className="flex-1">
-              <i className="iconfont wyybofangshaixuan text-cyan-500 text-xl"></i>
-            </div>
+            <MusicListView />
           </div>
         </div>
       </div>
