@@ -27,7 +27,6 @@ const createRoute = (routes: RoutesProps[]) => {
   return list;
 };
 export const App: React.FC = () => {
-  console.log(routes);
   return (
     <HashRouter basename="/">
       <Routes>

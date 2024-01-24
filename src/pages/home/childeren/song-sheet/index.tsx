@@ -4,6 +4,7 @@ import { trackAll } from "@/api";
 import Dayjs from "dayjs";
 import Tooltip from "@mui/material/Tooltip";
 import { TabsCom } from "./tabs";
+import { useBearStore } from "@/store";
 interface DatailsProps {
   coverImgUrl: string;
   name: string;
@@ -35,6 +36,11 @@ export const SongSheet = () => {
     creator: { nickname: "", avatarUrl: "" },
   });
   const [playList, setPlayList] = useState<miusProps[]>([]);
+  const [setMusicListPush, setMusicIndex, musicList] = useBearStore((state) => [
+    state.setMusicListPush,
+    state.setMusicIndex,
+    state.musicList,
+  ]);
   const getData = async () => {
     const { playlist } = await trackAll({ id: state?.id, limit: 20 });
     console.log(playlist);
@@ -85,7 +91,14 @@ export const SongSheet = () => {
             </div>
           </div>
           <div className="flex pt-1 pb-3">
-            <div className=" h-8 bg-[rgb(236,65,65)] text-white px-3 rounded-3xl py-5 flex items-center">
+            <div
+              className=" h-8 bg-[rgb(236,65,65)] text-white px-3 rounded-3xl py-5 flex items-center cursor-pointer"
+              onClick={() => {
+                const index = musicList?.length;
+                setMusicListPush(playList);
+                setMusicIndex(index);
+              }}
+            >
               <div className=" w-8 flex justify-center">
                 <i className="iconfont wyybofang2  text-sm"></i>
               </div>

@@ -1,7 +1,7 @@
 import type { MenuProps } from "antd";
-import { Button, Dropdown } from "antd";
+import { Dropdown, Popover } from "antd";
 import Tooltip from "@mui/material/Tooltip";
-import "../index.css";
+// import "../index.css";
 import { useBearStore } from "@/store";
 import { useEffect } from "react";
 export const MusicListView = () => {
@@ -15,8 +15,8 @@ export const MusicListView = () => {
   );
   const ListItem = () => {
     return (
-      <div className="w-[20vw] h-[71.5vh] flex flex-col overflow-y-auto">
-        <div className="py-3">共{musicList?.length}首歌曲</div>
+      <div className="w-[20vw] h-[700px] flex flex-col overflow-y-auto">
+        <div className="py-3"></div>
         {musicList?.map((item, index) => {
           return (
             <div
@@ -26,7 +26,6 @@ export const MusicListView = () => {
               }`}
               onClick={() => {
                 setMusicListPush(item);
-                setMusicIndex(musicList?.length);
               }}
             >
               <div className="w-10 justify-center flex items-center">
@@ -56,17 +55,17 @@ export const MusicListView = () => {
       </div>
     );
   };
-  const items: MenuProps["items"] = [
-    {
-      key: "1",
-      label: <ListItem />,
-    },
-  ];
   return (
     <div className="flex-1 ">
-      <Dropdown menu={{ items }} trigger={["click"]} placement="topRight" arrow>
+      <Popover
+        title={`共${musicList?.length}首歌曲`}
+        trigger={["click"]}
+        placement="topRight"
+        arrow
+        content={ListItem()}
+      >
         <i className="iconfont wyybofangshaixuan text-cyan-500 text-xl cursor-pointer"></i>
-      </Dropdown>
+      </Popover>
     </div>
   );
 };

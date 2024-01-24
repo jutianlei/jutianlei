@@ -1,34 +1,51 @@
 import { create } from "zustand";
 import { SingleProps } from "@/pages/home/components/hit-single";
 interface StateProps {
-  musicProgress: number;
-  volumeIndex: number;
+  /**
+   * @description 音乐列表以及当前播放
+   */
   musicList: SingleProps[];
+
+  /**
+   * @description 音乐列表当前下标值
+   */
   musicIndex: number;
-  setVolumeIndex: (value: StateProps["volumeIndex"]) => void;
-  setMusicListPush: (value: SingleProps) => void;
+
+  /**
+   * @description 音乐列表以及当前播放set方法
+   */
+  setMusicListPush: (value: SingleProps | SingleProps[]) => void;
+
+  /**
+   * @description set音乐列表当前下标值
+   */
   setMusicIndex: (value: number) => void;
 
   picUrl: string;
+  /**
+   * @description set音乐地址
+   */
   setPicUrl: (value: string) => void;
 }
 export const useBearStore = create<StateProps>((set) => ({
-  /**
-   * 音乐当前播放进度
-   * */
-  musicProgress: 0,
-
-  /**
-   * 音量
-   */
-  volumeIndex: 0,
-  setVolumeIndex: (value) =>
-    set((state: StateProps) => ({ volumeIndex: value })),
-
-  /** 音乐列表以及当前播放 */
   musicList: [],
   setMusicListPush: (value) =>
-    set((state: StateProps) => ({ musicList: [...state.musicList, value] })),
+    set((state: StateProps) => {
+      let index;
+      if (!Array.isArray(value)) {
+        index = state.musicList.findIndex((item) => item.id === value?.id);
+      } else {
+        index = -1;
+      }
+
+      if (index !== -1) {
+        return { musicIndex: index };
+      } else {
+        const newValue = Array.isArray(value) ? [...value] : [value];
+        const newMusicList = [...state.musicList, ...newValue];
+        return { musicIndex: newMusicList.length - 1, musicList: newMusicList };
+      }
+    }),
 
   /**
    * 音乐的下标

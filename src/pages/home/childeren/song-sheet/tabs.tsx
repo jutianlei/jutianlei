@@ -39,7 +39,6 @@ export const TabsCom = ({ data }: { data: miusProps[] }) => {
                 }`}
                 onClick={() => {
                   setMusicListPush(item);
-                  setMusicIndex(musicList?.length);
                 }}
               >
                 <div className=" w-32 text-slate-500">{index + 1}</div>

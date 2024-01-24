@@ -3,17 +3,15 @@ import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import Tooltip from "react-bootstrap/Tooltip";
 import Slider from "@mui/material/Slider";
 import { MusicSlider } from "@/components";
-import { musicList } from "./constant";
 import "./index.css";
 import { useBearStore } from "@/store";
-import { MusicListView } from "./components/musicListView";
+import { MusicListView, PlayOrder } from "./components";
 import { getSongUrl, checkMusic } from "@/api";
 export const Footer: React.FC = () => {
   const [isPlaying, setIsPlaying] = useState(false);
   const audioRef = useRef<HTMLAudioElement>(null);
   const [duration, setDuration] = useState(0);
   const [currentTime, setCurrentTime] = useState(0);
-  const [isUserInteraction, setIsUserInteraction] = useState(false);
   const [volume, setVolume] = useState(100); // 音量状态变量
   const [musicList, musicIndex, setMusicIndex, picUrl, setPicUrl] =
     useBearStore((state) => [
@@ -23,72 +21,90 @@ export const Footer: React.FC = () => {
       state.picUrl,
       state.setPicUrl,
     ]);
-  const togglePlay = () => {
-    setIsUserInteraction(true);
-    if (isPlaying) {
-      audioRef.current?.pause();
-    } else {
-      audioRef.current?.play();
+
+  /**
+   * 停止播放
+   */
+  const stopPlay = () => {
+    audioRef.current?.pause();
+  };
+
+  /**
+   * 监听音频是否播放完毕
+   */
+  const handleAudioEnded = () => {
+    const audioElement = audioRef.current;
+    if (!audioElement) return;
+    const nextIndex = musicIndex + 1;
+    if (nextIndex === musicList?.length) {
+      setMusicIndex(0);
+      return;
     }
-    setIsPlaying(!isPlaying);
+    setMusicIndex(nextIndex);
   };
   useEffect(() => {
     const audioElement = audioRef.current;
     if (audioElement) {
+      /**
+       * 监听音频播放进度
+       */
       const handleTimeUpdate = () => {
+        if (!audioElement) return;
         setCurrentTime(audioElement.currentTime);
       };
-
-      const handleLoadedMetadata = () => {
-        setDuration(audioElement.duration);
-      };
-
       audioElement.addEventListener("timeupdate", handleTimeUpdate);
-      audioElement.addEventListener("loadedmetadata", handleLoadedMetadata);
-
+      audioElement.addEventListener("ended", () => {
+        handleAudioEnded();
+      });
       return () => {
         audioElement.removeEventListener("timeupdate", handleTimeUpdate);
-        audioElement.removeEventListener(
-          "loadedmetadata",
-          handleLoadedMetadata
-        );
+        audioElement.removeEventListener("ended", handleAudioEnded);
       };
     }
-  }, []);
+  }, [musicIndex]);
+
+  /**
+   * 时间转换
+   */
   const formatTime = (time: number) => {
     const minutes = Math.floor(time / 60);
     const seconds = Math.floor(time % 60);
     return `${minutes}:${seconds.toString().padStart(2, "0")}`;
   };
+
+  /**
+   * 切换下一首
+   */
   const rightArrow = () => {
-    if (musicIndex - 1 >= 0) {
-      setMusicIndex(musicIndex - 1);
+    if (musicIndex === musicList.length - 1) {
+      setMusicIndex(0);
     } else {
-      setMusicIndex(musicList.length - 1);
+      setMusicIndex(musicIndex + 1);
     }
-    audioRef.current?.pause();
-    audioRef.current?.play();
+    musicLoadeddata();
   };
 
+  /**
+   * 切换上一首
+   */
   const letArrow = () => {
-    if (musicIndex + 1 < musicList.length) {
-      setMusicIndex(musicIndex + 1);
+    if (musicIndex === 0) {
+      setMusicIndex(musicList?.length - 1);
     } else {
-      setMusicIndex(0);
+      setMusicIndex(musicIndex - 1);
     }
-    audioRef.current?.pause();
-    audioRef.current?.play();
+    musicLoadeddata();
   };
-  useEffect(() => {
-    if (isUserInteraction) {
-      audioRef.current?.play();
-    }
-  }, [musicIndex, isUserInteraction]);
+
   const preventHorizontalKeyboardNavigation = (event: React.KeyboardEvent) => {
     if (event.key === "ArrowLeft" || event.key === "ArrowRight") {
       event.preventDefault();
     }
   };
+
+  /**
+   * 获取播放条进度以及控制播放进度
+   */
   const handleVolumeChange = (newVolume: number | number[]) => {
     if (typeof newVolume === "number") {
       const volumeValue = newVolume / 100;
@@ -119,21 +135,31 @@ export const Footer: React.FC = () => {
       </div>
     </Tooltip>
   );
+
+  /**
+   * 监听音频是否加载完成
+   */
+  const musicLoadeddata = () => {
+    if (audioRef?.current) {
+      audioRef?.current?.addEventListener("loadeddata", () => {
+        //监听是否加载完成
+        audioRef.current?.pause();
+        audioRef.current?.play();
+        setDuration(audioRef?.current?.duration || 0);
+      });
+    }
+  };
+
+  /**
+   * 请求歌曲是否可以播放 并且获取歌曲的url
+   */
   const getMusic = async () => {
-    console.log(musicIndex);
     const DATA = await checkMusic({ id: musicList[musicIndex]?.id });
     if (DATA?.success) {
       const res = await getSongUrl({ id: musicList[musicIndex]?.id });
       setPicUrl(res.data[0].url);
       setIsPlaying(true);
-
-      const handleLoadedData = () => {
-        //监听是否加载完成
-        audioRef.current?.pause();
-        audioRef.current?.play();
-      };
-
-      audioRef?.current?.addEventListener("loadeddata", handleLoadedData);
+      musicLoadeddata();
     }
   };
   useEffect(() => {
@@ -141,6 +167,16 @@ export const Footer: React.FC = () => {
       getMusic();
     }
   }, [musicList, musicIndex]);
+  /**
+   * 监听是否点击播放或者暂停
+   */
+  useEffect(() => {
+    if (isPlaying) {
+      audioRef.current?.play();
+    } else {
+      stopPlay();
+    }
+  }, [isPlaying]);
   return (
     <footer className="   backdrop-blur-xl h-full shadow-md rounded-b-lg relative">
       <MusicSlider
@@ -177,7 +213,7 @@ export const Footer: React.FC = () => {
             </div>
             <div
               className="flex items-center ml-10 rounded-full justify-center cursor-pointer  shadow-lg"
-              onClick={togglePlay}
+              onClick={() => setIsPlaying(!isPlaying)}
             >
               {isPlaying ? (
                 <i className="iconfont wyytingzhi text-6xl text-cyan-500"></i>
@@ -205,9 +241,7 @@ export const Footer: React.FC = () => {
                 <i className="iconfont wyyyinlianggao text-cyan-500 text-xl cursor-pointer"></i>
               </OverlayTrigger>
             </div>
-            <div className="flex-1">
-              <i className="iconfont wyysuijibofang text-cyan-500 text-xl"></i>
-            </div>
+            <PlayOrder />
             <MusicListView />
           </div>
         </div>

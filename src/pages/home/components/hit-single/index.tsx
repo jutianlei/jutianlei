@@ -9,6 +9,7 @@ export interface SingleProps {
   userName?: string;
   time?: string;
   album?: string;
+  length?: number;
 }
 export const HitSingle: React.FC = () => {
   const [setMusicListPush, musicList, setMusicIndex] = useBearStore((state) => [
@@ -46,7 +47,6 @@ export const HitSingle: React.FC = () => {
                 className="w-[32%] flex mt-3 mb-3 cursor-pointer  hover:bg-white/20  pr-1 mr-2 rounded-lg"
                 onClick={() => {
                   setMusicListPush(item);
-                  setMusicIndex(musicList?.length);
                 }}
               >
                 <div className="w-20">
