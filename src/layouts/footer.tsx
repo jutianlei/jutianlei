@@ -4,22 +4,24 @@ import Tooltip from "react-bootstrap/Tooltip";
 import Slider from "@mui/material/Slider";
 import { MusicSlider } from "@/components";
 import "./index.css";
-import { useBearStore } from "@/store";
+import { PlayModeEnum, useBearStore } from "@/store";
 import { MusicListView, PlayOrder } from "./components";
 import { getSongUrl, checkMusic } from "@/api";
+import { formatTime, randomMode, listMode } from "@/layouts/constant";
 export const Footer: React.FC = () => {
   const [isPlaying, setIsPlaying] = useState(false);
   const audioRef = useRef<HTMLAudioElement>(null);
   const [duration, setDuration] = useState(0);
   const [currentTime, setCurrentTime] = useState(0);
   const [volume, setVolume] = useState(100); // 音量状态变量
-  const [musicList, musicIndex, setMusicIndex, picUrl, setPicUrl] =
+  const [musicList, musicIndex, setMusicIndex, picUrl, setPicUrl, playMode] =
     useBearStore((state) => [
       state.musicList,
       state.musicIndex,
       state.setMusicIndex,
       state.picUrl,
       state.setPicUrl,
+      state.playMode,
     ]);
 
   /**
@@ -35,12 +37,31 @@ export const Footer: React.FC = () => {
   const handleAudioEnded = () => {
     const audioElement = audioRef.current;
     if (!audioElement) return;
-    const nextIndex = musicIndex + 1;
-    if (nextIndex === musicList?.length) {
-      setMusicIndex(0);
-      return;
+    if (musicList?.length && musicIndex !== -1) {
+      let index = PlayModeEnum.ORDER;
+      switch (playMode) {
+        case PlayModeEnum.ORDER:
+          setMusicIndex(musicIndex + 1);
+          break;
+        case PlayModeEnum.RANDOM:
+          setMusicIndex(randomMode(musicList.length));
+          break;
+        case PlayModeEnum.LIST_LOOP:
+          setMusicIndex(listMode(musicList.length, musicIndex));
+          break;
+        case PlayModeEnum.SINGLE_LOOP:
+          setMusicIndex(-1);
+          index = musicIndex;
+          setMusicIndex(index);
+          break;
+        default:
+          if (musicList.length === musicIndex) {
+            return;
+          }
+          return setMusicIndex(musicIndex + 1);
+      }
+      setMusicIndex(index);
     }
-    setMusicIndex(nextIndex);
   };
   useEffect(() => {
     const audioElement = audioRef.current;
@@ -61,16 +82,7 @@ export const Footer: React.FC = () => {
         audioElement.removeEventListener("ended", handleAudioEnded);
       };
     }
-  }, [musicIndex]);
-
-  /**
-   * 时间转换
-   */
-  const formatTime = (time: number) => {
-    const minutes = Math.floor(time / 60);
-    const seconds = Math.floor(time % 60);
-    return `${minutes}:${seconds.toString().padStart(2, "0")}`;
-  };
+  }, [playMode]);
 
   /**
    * 切换下一首
@@ -178,7 +190,7 @@ export const Footer: React.FC = () => {
     }
   }, [isPlaying]);
   return (
-    <footer className="   backdrop-blur-xl h-full shadow-md rounded-b-lg relative">
+    <footer className="backdrop-blur-xl h-full shadow-md rounded-b-lg relative">
       <MusicSlider
         classNames="absolute w-full top-[-15px] mx-1"
         audioRef={audioRef}
