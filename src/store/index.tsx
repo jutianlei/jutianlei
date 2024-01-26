@@ -23,45 +23,33 @@ interface StateProps {
    * @description 音乐列表以及当前播放
    */
   musicList: SingleProps[];
+  setMusicListPush: (value: SingleProps | SingleProps[]) => void;
 
   /**
    * @description 音乐列表当前下标值
    */
   musicIndex: number;
-
-  /**
-   * @description 音乐列表以及当前播放set方法
-   */
-  setMusicListPush: (value: SingleProps | SingleProps[]) => void;
-
-  /**
-   * @description set音乐列表当前下标值
-   */
   setMusicIndex: (value: number) => void;
 
   /**
    * @description 音乐地址
    */
   picUrl: string;
-
-  /**
-   * @description set音乐地址
-   */
   setPicUrl: (value: string) => void;
 
   /**
    * @description 播放模式
    */
   playMode: PlayModeEnum;
-
-  /**
-   * @description set播放模式
-   */
   setPlayMode: (value: PlayModeEnum) => void;
+
+  token: string;
+  setToken: (value: PlayModeEnum) => void;
 }
 export const useBearStore = create<StateProps>((set) => ({
+  token: "",
+  setToken: (value) => set((state) => ({ playMode: value })),
   musicList: [],
-  playMode: 1,
   setMusicListPush: (value) =>
     set((state: StateProps) => {
       let index;
@@ -79,9 +67,11 @@ export const useBearStore = create<StateProps>((set) => ({
         return { musicIndex: newMusicList.length - 1, musicList: newMusicList };
       }
     }),
+  playMode: 1,
+
   musicIndex: 0,
-  setMusicIndex: (value) => set((state: StateProps) => ({ musicIndex: value })),
+  setMusicIndex: (value) => set((state) => ({ musicIndex: value })),
   picUrl: "",
-  setPicUrl: (value) => set((state: StateProps) => ({ picUrl: value })),
-  setPlayMode: (value) => set((state: StateProps) => ({ playMode: value })),
+  setPicUrl: (value) => set((state) => ({ picUrl: value })),
+  setPlayMode: (value) => set((state) => ({ playMode: value })),
 }));
