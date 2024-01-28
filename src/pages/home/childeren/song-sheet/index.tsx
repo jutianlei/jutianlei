@@ -43,7 +43,6 @@ export const SongSheet = () => {
   ]);
   const getData = async () => {
     const { playlist } = await trackAll({ id: state?.id, limit: 20 });
-    console.log(playlist);
     setData({
       ...playlist,
       playCount:

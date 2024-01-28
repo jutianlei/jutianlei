@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 import { routes } from "@/router";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 export const Sidebar = () => {
   const navigate = useNavigate();
-  const [selectedItem, setSelectedItem] = useState("为你推荐"); // 保存当前选中的项
+  const location = useLocation();
+  const [selectedItem, setSelectedItem] = useState(location.pathname); // 保存当前选中的项
   const handleItemClick = (item: any) => {
-    setSelectedItem(item.name);
+    setSelectedItem(item.path);
     navigate(item.path);
   };
 
@@ -26,6 +27,8 @@ export const Sidebar = () => {
       </div>
       <div className="w-full flex flex-wrap justify-center">
         {routes.map((item, index) => {
+          console.log(item.path, ">>>>item");
+          console.log(selectedItem, ">>>>selectedItem");
           if (!item.hideMenu)
             return (
               <div
@@ -34,12 +37,12 @@ export const Sidebar = () => {
               >
                 <div
                   className={`w-2 h-8 bg-blue-500 ${
-                    selectedItem === item.name ? "opacity-100" : "opacity-0"
+                    selectedItem === item.path ? "opacity-100" : "opacity-0"
                   }`}
                 ></div>
                 <div
                   className={`cursor-pointer pl-7 ${
-                    selectedItem === item.name ? "text-blue-500" : ""
+                    selectedItem === item.path ? "text-blue-500" : ""
                   }`}
                   onClick={() => handleItemClick(item)}
                 >

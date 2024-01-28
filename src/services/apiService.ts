@@ -15,10 +15,6 @@ export class ApiService {
       (config) => {
         // 添加请求拦截器的操作
         NProgress.start(); // 进度条 表示已经在请求
-        const accountInfo = { token: "" }; // 获取token
-        if (accountInfo?.token) {
-          config.headers.Authorization = `${accountInfo.token}`;
-        }
         return config;
       },
       (error) => {
@@ -44,6 +40,10 @@ export class ApiService {
         }
       },
       (error) => {
+        if (error?.response?.data) {
+          NProgress.done();
+          return Promise.resolve(error.response.data);
+        }
         NProgress.done();
         return Promise.reject(error);
       }

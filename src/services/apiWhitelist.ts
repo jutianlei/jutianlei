@@ -4,4 +4,9 @@ export const apiWhitelist: string[] = [
   "/playlist/subscribers",
   "/song/url",
   "/check/music",
+  "/captcha/sent",
+  "/captcha/verify",
+  "/login/cellphone",
+  "/likelist",
+  "/song/detail",
 ];

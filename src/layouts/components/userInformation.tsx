@@ -1,3 +1,5 @@
+import { useBearStore } from "@/store";
+import Cookies from "js-cookie";
 interface TypeProps {
   name?: string;
   num?: number;
@@ -8,6 +10,10 @@ interface AuthorityProps {
   styles?: string;
 }
 export const UserInformation = () => {
+  const [userInfo, setUserInfo] = useBearStore((state) => [
+    state.userInfo,
+    state.setUserInfo,
+  ]);
   const imgUrl =
     "https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fsafe-img.xhscdn.com%2Fbw1%2F5407e875-b8e7-4d66-95d3-eeec12a6d392%3FimageView2%2F2%2Fw%2F1080%2Fformat%2Fjpg&refer=http%3A%2F%2Fsafe-img.xhscdn.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1707475593&t=bdc79b6672aaeeb6f1bbc9bbe73c2318";
   const authorityList: AuthorityProps[] = [
@@ -72,10 +78,14 @@ export const UserInformation = () => {
   return (
     <div className=" w-80 px-3 ">
       <div className="w-full pt-3 flex">
-        <img src={imgUrl} alt="" className=" rounded-full w-12 h-12" />
+        <img
+          src={userInfo?.avatarUrl || imgUrl}
+          alt=""
+          className=" rounded-full w-12 h-12"
+        />
         <div className="flex flex-wrap pl-3">
           <div className=" w-full text-[16px] font-semibold cursor-pointer">
-            稳小情
+            {userInfo?.nickname || "稳小情"}
           </div>
           <div className="flex">
             <div className=" cursor-pointer">6 粉丝</div>
@@ -130,7 +140,21 @@ export const UserInformation = () => {
               key={index}
               className={`${item.styles} border-slate-100 flex flex-1 justify-center items-center pt-1 mb-3 text-slate-600 text-sm`}
             >
-              <span className="hover:text-cyan-500 cursor-pointer">
+              <span
+                className="hover:text-cyan-500 cursor-pointer"
+                onClick={() => {
+                  if (index === 3) {
+                    Cookies.remove("cookie"); // 删除token
+                    setUserInfo({
+                      avatarUrl: "",
+                      nickname: "",
+                      token: "",
+                      cookie: "",
+                      id: 0,
+                    });
+                  }
+                }}
+              >
                 {item?.name}
               </span>
             </div>

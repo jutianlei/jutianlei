@@ -43,12 +43,24 @@ interface StateProps {
   playMode: PlayModeEnum;
   setPlayMode: (value: PlayModeEnum) => void;
 
-  token: string;
-  setToken: (value: PlayModeEnum) => void;
+  userInfo: {
+    avatarUrl: string;
+    nickname: string;
+    token: string;
+    cookie: string;
+    id: number;
+  };
+  setUserInfo: (value: StateProps["userInfo"]) => void;
 }
 export const useBearStore = create<StateProps>((set) => ({
-  token: "",
-  setToken: (value) => set((state) => ({ playMode: value })),
+  userInfo: {
+    avatarUrl: "",
+    nickname: "",
+    token: "",
+    cookie: "",
+    id: 0,
+  },
+  setUserInfo: (value) => set((state) => ({ userInfo: value })),
   musicList: [],
   setMusicListPush: (value) =>
     set((state: StateProps) => {
@@ -67,11 +79,13 @@ export const useBearStore = create<StateProps>((set) => ({
         return { musicIndex: newMusicList.length - 1, musicList: newMusicList };
       }
     }),
+
   playMode: 1,
+  setPlayMode: (value) => set((state) => ({ playMode: value })),
 
   musicIndex: 0,
   setMusicIndex: (value) => set((state) => ({ musicIndex: value })),
+
   picUrl: "",
   setPicUrl: (value) => set((state) => ({ picUrl: value })),
-  setPlayMode: (value) => set((state) => ({ playMode: value })),
 }));
