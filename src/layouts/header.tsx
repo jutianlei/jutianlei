@@ -45,7 +45,7 @@ export const Header: React.FC = () => {
     }
   };
   return (
-    <header className="h-20 px-8">
+    <header className="h-20 px-8 ">
       <div className="flex h-full w-full items-center justify-center">
         <SearchBox />
         <div className="flex-1 flex justify-end">

@@ -1,5 +1,4 @@
 import { useLocation } from "react-router-dom";
-import { getCloudsearch } from "@/api";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import { useState } from "react";
@@ -37,13 +36,14 @@ export const SearchFor = () => {
     <AlbumList />,
   ];
   return (
-    <div className="px-8">
+    <div>
       <Tabs
         value={value}
         onChange={handleChange}
         textColor="secondary"
         indicatorColor="secondary"
         aria-label="secondary tabs example"
+        centered
       >
         {titleList.map((item, index) => {
           return <Tab key={index} value={item} label={item} />;

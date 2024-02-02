@@ -71,6 +71,11 @@ export const SearchBox = () => {
     setValue(target.value || "");
     let timeout = setTimeout(() => {
       getSearchResult(target.value || null);
+      if (!target.value) {
+        setSongList([]);
+        setAlbumsList([]);
+        setOpen(false);
+      }
     }, 500);
     setDelayed(timeout);
   };
@@ -89,6 +94,7 @@ export const SearchBox = () => {
             placeholder="搜索音乐"
             prefix={<SearchOutlined />}
             onChange={onSearch}
+            onClick={onSearch}
             value={value}
           />
         </div>
