@@ -61,3 +61,11 @@ export const getSongDetails = (data: object) =>
  */
 export const getSearchSuggest = (data: object) =>
   fetch.get("/search/suggest", { params: data });
+
+/**
+ * @param keywords 关键词
+ * @param type 搜索类型，默认为 1 即单曲 , 取值意义 : 1: 单曲, 10: 专辑, 100: 歌手, 1000: 歌单, 1002: 用户, 1004: MV, 1006: 歌词, 1009: 电台, 1014: 视频, 1018:综合, 2000:声音(搜索声音返回字段格式会不一样)
+ * @returns 根据歌名返回数据，可以搜索音乐/专辑/歌手/歌单/用户，管检测可以多个，以空格隔开，如"周杰伦 搁浅"
+ */
+export const getCloudsearch = (data: object) =>
+  fetch.get("/cloudsearch", { params: data });

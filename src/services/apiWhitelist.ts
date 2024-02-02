@@ -9,4 +9,5 @@ export const apiWhitelist: string[] = [
   "/login/cellphone",
   "/likelist",
   "/song/detail",
+  "/search/suggest",
 ];

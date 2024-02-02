@@ -2,6 +2,7 @@ import { RoutesProps } from "@/constant/types";
 import { Home } from "@/pages/home";
 import { Playlist } from "@/pages/playlist";
 import { SongSheet } from "@/pages/home/childeren";
+import { SearchFor } from "@/pages/search-for";
 export const routes: RoutesProps[] = [
   {
     path: "/",
@@ -13,6 +14,12 @@ export const routes: RoutesProps[] = [
     path: "/song-sheet",
     name: "歌单详情",
     element: <SongSheet />,
+    hideMenu: true,
+  },
+  {
+    path: "/search-for-list",
+    name: "搜索页面",
+    element: <SearchFor />,
     hideMenu: true,
   },
   {

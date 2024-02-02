@@ -27,8 +27,6 @@ export const Sidebar = () => {
       </div>
       <div className="w-full flex flex-wrap justify-center">
         {routes.map((item, index) => {
-          console.log(item.path, ">>>>item");
-          console.log(selectedItem, ">>>>selectedItem");
           if (!item.hideMenu)
             return (
               <div
